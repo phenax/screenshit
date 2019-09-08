@@ -41,7 +41,7 @@ Pass the page urls as command line arguments.
 screenshit --urls "https://google.com" "https://github.com"
 ```
 
-`urls` is a boolean flag. Any loose arguments will be considered as urls
+NOTE: `urls` is a boolean flag. Any loose arguments will be considered as urls.
 
 
 ### From json list of urls
@@ -69,3 +69,10 @@ screenshit --csv ./path/to/file.csv
 ```
 
 The csv file needs to have the url as the first column
+
+```csv
+urls,label
+https://google.com,"Google"
+https://github.com,"Github homepage"
+https://phenax.github.io,"Akshay Nair"
+```
