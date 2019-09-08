@@ -70,15 +70,12 @@ function takeScreenshots(options) {
   const files = getUrls(options);
 
   return Promise.all(
-    files.map(url => {
-      console.log('Fetching', url, '...');
-
-      return screenshit({
-        url,
-        outputPath: path.resolve(outdir, toImageFileName(url)),
-        ...rest,
-      });
-    })
+    files.map(url => screenshit({
+      url,
+      outputPath: path.resolve(outdir, toImageFileName(url)),
+      logging: true,
+      ...rest,
+    }))
   );
 }
 

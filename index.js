@@ -17,12 +17,17 @@ const handleRetries = (fn, lastError) => options => {
   if (retries < 0) return Promise.reject(lastError);
 
   return fn(options).catch(error => {
-    return handleRetries(fn, error)({ ...options, retries: retries - 1 });
+    return handleRetries(fn, error)({
+      ...options,
+      failedFirstAttempt: true,
+      retries: retries - 1,
+    });
   });
 };
 
 async function takeScreenshot(options) {
-  const { url, outputPath, timeout = 3000000, dimensions = '1024x600', logging } = options || {};
+  const { url, outputPath, timeout = 3000000, dimensions = '1024x600' } = options || {};
+  const { logging, failedFirstAttempt } = options || {};
 
   const browser = await puppeteer.launch({
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
@@ -30,7 +35,9 @@ async function takeScreenshot(options) {
 
   const page = await browser.newPage();
 
-  logging && console.log('Fetching', options.url, '...');
+  if (logging) {
+    console.log(failedFirstAttempt ? 'Retrying' : 'Fetching', options.url, '...');
+  }
 
   await page.goto(url, {
     waitUntil: 'networkidle2',
