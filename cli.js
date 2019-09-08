@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const slugify = require('slugify');
 const yargs = require('yargs');
+const csvParser = require('csvtojson');
 
 const screenshit = require('./index');
 
@@ -52,10 +53,13 @@ const guard = fn => options => {
 };
 
 // getUrls :: { json: string, csv: string, url: string } -> []
-function getUrls({ json, csv, url }) {
+async function getUrls({ json, csv, url }) {
   if (url) return [url];
   if (json) return JSON.parse(fs.readFileSync(json, 'utf-8')).urls;
-  if (csv) return JSON.parse(fs.readFileSync(csv, 'utf-8'));
+  if (csv) {
+    const files = await csvParser({ output: 'csv' }).fromFile(csv);
+    return files.map(([ url ]) => url);
+  };
   return [];
 }
 
@@ -64,10 +68,10 @@ const toImageFileName = url =>
   `${slugify(url).replace(/^https?:?/, '')}-${randomHash()}.png`;
 
 // takeScreenshots :: Options -> Promise [string]
-function takeScreenshots(options) {
+async function takeScreenshots(options) {
   const { json, csv, url, outdir, ...rest } = options;
 
-  const files = getUrls(options);
+  const files = await getUrls(options);
 
   return Promise.all(
     files.map(url => screenshit({
@@ -88,6 +92,7 @@ guard(takeScreenshots)(argv)
     }
 
     console.log('Done');
+    process.exit(0);
   })
   .catch(e => {
     console.error(e);

@@ -5,9 +5,9 @@ const { compose } = require('pipey');
 const guard = fn => options => {
   const { url, retries, outputPath } = options || {};
 
-  if (retries < 0) throw new Error('retries cannot be less than 0');
-  if (!url) throw new Error('url parameter is compulsory');
-  if (!outputPath) throw new Error('outputPath parameter is compulsory');
+  if (retries < 0) Promise.reject(new Error('retries cannot be less than 0'));
+  if (!url) Promise.reject(new Error('url parameter is compulsory'));
+  if (!outputPath) Promise.reject(new Error('outputPath parameter is compulsory'));
 
   return fn(options);
 };
