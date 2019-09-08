@@ -1,14 +1,12 @@
 {
   "name": "screenshit",
   "version": "0.0.0",
-  "description": "__",
+  "description": "CLI tool to capture screenshots of a list of web page urls",
   "main": "index.js",
-  "repository": "__",
+  "repository": "https://github.com/phenax/screenshit",
   "author": "Akshay Nair<phenax5@gmail.com>",
   "license": "MIT",
-  "bin": {
-    "screenshit": "cli.js"
-  },
+  "bin": "cli.js",
   "dependencies": {
     "csvtojson": "^2.0.10",
     "pipey": "1.0.0-alpha.0",
