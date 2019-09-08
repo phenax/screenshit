@@ -50,7 +50,7 @@ const guard = fn => options => {
 
 // getUrls :: { json: string, csv: string, url: string } -> []
 async function getUrls({ json, csv, urls, _: looseArgs }) {
-  if (urls) return looseArgs;
+  if (urls) return looseArgs || [];
   if (json) return JSON.parse(fs.readFileSync(json, 'utf-8')).urls;
   if (csv) {
     const files = await csvParser({ output: 'csv' }).fromFile(csv);
@@ -62,7 +62,7 @@ async function getUrls({ json, csv, urls, _: looseArgs }) {
 // takeScreenshots :: Options -> Promise [string]
 async function takeScreenshots(options) {
   const urls = await getUrls(options);
-  return screenshits.multi({ urls, ...options });
+  return screenshits.multi({ ...options, urls });
 }
 
 guard(takeScreenshots)(argv)
