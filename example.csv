@@ -1,4 +1,4 @@
-files
-https://google.com
-https://github.com
-https://phenax.github.io
+urls,label
+https://google.com,"Google"
+https://github.com,"Github homepage"
+https://phenax.github.io,"Akshay Nair"

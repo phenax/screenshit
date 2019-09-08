@@ -1,4 +1,5 @@
 const path = require('path');
+const slugify = require('slugify');
 const puppeteer = require('puppeteer');
 const { compose } = require('pipey');
 
@@ -56,4 +57,27 @@ async function takeScreenshot(options) {
   return path.resolve(outputPath);
 };
 
-module.exports = compose(handleRetries, guard)(takeScreenshot);
+// singleShot :: Options -> Promise string
+const singleShot = compose(handleRetries, guard)(takeScreenshot);
+
+// toImageFileName :: string -> string
+const toImageFileName = url =>
+  `${slugify(url).replace(/^https?:?/, '')}-${randomHash()}.png`;
+
+// randomHash :: () -> string
+const randomHash = () => `${Math.random().toString(16)}0000000`.slice(2, 8);
+
+// mutliShots :: Options -> Promise [string]
+const mutliShots = ({ urls, outdir, ...rest }) => Promise.all(
+  urls.map(url => singleShot({
+    url,
+    outputPath: path.resolve(outdir, toImageFileName(url)),
+    logging: true,
+    ...rest,
+  })),
+);
+
+module.exports = {
+  single: singleShot,
+  multi: mutliShots,
+};
