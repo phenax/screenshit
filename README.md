@@ -6,6 +6,8 @@ CLI tool to capture screenshots of a list of web pages
 
 * Install it globally
 ```bash
+npm install screenshit -g
+# OR
 yarn global add screenshit
 ```
 
