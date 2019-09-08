@@ -18,12 +18,13 @@ npx screenshit --help
 
 ### Help menu
 ```
-screenshit --json path/to/file.json -O ./screenshots
+screenshit --json path/to/file.json
 
 Options:
   --version         Show version number                                [boolean]
   --help            Show help                                          [boolean]
-  --url             The url of the page you want to screenshot          [string]
+  --urls            URL mode - You can follow this flag with space seperated
+                    list of page urls to screenshit                    [boolean]
   --json            Path to your json config file                       [string]
   --csv             Path to your csv config file                        [string]
   --outdir, -O      Path to where you want your pngs dumped
